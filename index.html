@@ -1,1 +1,169 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hán Ngữ 360 - Học tiếng Trung</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7ff;color:#202746}
+header{background:linear-gradient(120deg,#5546d8,#8876f5);color:white;padding:28px 7%;text-align:center}
+header h1{font-size:34px;margin:0 0 10px}
+header p{margin:0;line-height:1.6}
+nav{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:18px}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 17px;font-size:15px;font-weight:bold}
+nav button{background:white;color:#5546d8;border:1px solid #ddd}
+nav button.active, .primary{background:#5546d8;color:white}
+main{max-width:900px;margin:auto;padding:10px 20px 40px}
+.card{background:white;padding:24px;border-radius:18px;margin:16px 0;box-shadow:0 5px 20px #27305a10}
+h2{margin-top:0}
+.muted{color:#68718b;line-height:1.7}
+.welcome{background:#eceaff;border-radius:14px;padding:20px}
+.word{font-size:34px;color:#5546d8;font-weight:bold;margin:16px 0}
+.pinyin{font-size:19px;color:#e16b47}
+.answer{display:block;width:100%;text-align:left;background:#f1f2fc;margin:9px 0;color:#202746}
+input,textarea{width:100%;padding:13px;border:1px solid #ccd0e0;border-radius:10px;font-size:16px;margin:8px 0}
+.result{margin-top:14px;font-weight:bold;line-height:1.6}
+footer{text-align:center;padding:25px;color:#68718b}
+</style>
+</head>
+<body>
+<header>
+<h1>🌸 Hán Ngữ 360</h1>
+<p>Học tiếng Trung mỗi ngày · Mỗi ngày tiến bộ một chút!</p>
+</header>
+
+<nav>
+<button class="active" onclick="showTab('home',this)">🏠 Trang chủ</button>
+<button onclick="showTab('listen',this)">🎧 Nghe</button>
+<button onclick="showTab('speak',this)">🗣️ Nói</button>
+<button onclick="showTab('read',this)">📖 Đọc</button>
+<button onclick="showTab('write',this)">✍️ Viết</button>
+</nav>
+
+<main>
+<section id="home" class="tab">
+<div class="welcome">
+<h2>你好！Nǐ hǎo!</h2>
+<p>Chào mừng bạn đến với Hán Ngữ 360.</p>
+<p>Website dành cho người mới bắt đầu học tiếng Trung. Hãy chọn một kỹ năng để bắt đầu!</p>
+</div>
+<div class="card">
+<h2>📚 Bốn kỹ năng tiếng Trung</h2>
+<p>🎧 <b>Nghe:</b> Nghe từ vựng và làm bài tập.</p>
+<p>🗣️ <b>Nói:</b> Luyện phát âm theo mẫu.</p>
+<p>📖 <b>Đọc:</b> Đọc chữ Hán và hiểu nghĩa.</p>
+<p>✍️ <b>Viết:</b> Ghi nhớ từ vựng và viết câu.</p>
+</div>
+<div class="card">
+<h2>🌟 Từ vựng hôm nay</h2>
+<div class="word">学习</div>
+<div class="pinyin">xué xí</div>
+<p>Nghĩa tiếng Việt: Học tập</p>
+<button class="primary" onclick="say('学习')">🔊 Nghe phát âm</button>
+</div>
+</section>
+
+<section id="listen" class="tab" hidden>
+<div class="card">
+<h2>🎧 Luyện nghe</h2>
+<p class="muted">Nhấn nút để nghe từ tiếng Trung, sau đó chọn nghĩa đúng.</p>
+<button class="primary" onclick="say('你好')">🔊 Nghe từ tiếng Trung</button>
+<p class="word">你好</p>
+<div class="pinyin">nǐ hǎo</div>
+<p>“你好” có nghĩa là gì?</p>
+<button class="answer" onclick="check('listen',false)">A. Tạm biệt</button>
+<button class="answer" onclick="check('listen',true)">B. Xin chào</button>
+<button class="answer" onclick="check('listen',false)">C. Cảm ơn</button>
+<div id="listenResult" class="result"></div>
+</div>
+</section>
+
+<section id="speak" class="tab" hidden>
+<div class="card">
+<h2>🗣️ Luyện nói</h2>
+<p class="muted">Nghe cách đọc mẫu, sau đó đọc theo. Bạn có thể dùng tính năng nhập liệu bằng giọng nói của thiết bị nếu có.</p>
+<div class="word">谢谢</div>
+<div class="pinyin">xiè xie</div>
+<p>Nghĩa: Cảm ơn</p>
+<button class="primary" onclick="say('谢谢')">🔊 Nghe mẫu</button>
+<p>Hãy thử nói: “Xiè xie”.</p>
+<label for="speakInput">Ghi lại câu bạn vừa luyện:</label>
+<input id="speakInput" placeholder="Ví dụ: Xiè xie">
+<button class="primary" onclick="document.getElementById('speakResult').textContent='Tốt lắm! Hãy nghe mẫu và luyện nói thêm vài lần nhé.'">Hoàn thành luyện tập</button>
+<div id="speakResult" class="result"></div>
+<p class="muted">Lưu ý: Nút nghe mẫu phát âm bằng giọng đọc có sẵn trên trình duyệt. Website chưa tự động chấm phát âm.</p>
+</div>
+</section>
+
+<section id="read" class="tab" hidden>
+<div class="card">
+<h2>📖 Luyện đọc</h2>
+<p>Đọc câu sau và chọn bản dịch chính xác.</p>
+<div class="word">我是学生。</div>
+<div class="pinyin">Wǒ shì xuésheng.</div>
+<button class="answer" onclick="check('read',false)">A. Tôi là giáo viên.</button>
+<button class="answer" onclick="check('read',true)">B. Tôi là học sinh.</button>
+<button class="answer" onclick="check('read',false)">C. Tôi thích tiếng Trung.</button>
+<div id="readResult" class="result"></div>
+<button class="primary" onclick="say('我是学生')">🔊 Nghe câu mẫu</button>
+</div>
+</section>
+
+<section id="write" class="tab" hidden>
+<div class="card">
+<h2>✍️ Luyện viết</h2>
+<p>Hãy điền từ tiếng Trung có nghĩa là “Xin chào”.</p>
+<input id="writeInput" placeholder="Nhập chữ Hán tại đây">
+<button class="primary" onclick="checkWrite()">Kiểm tra đáp án</button>
+<div id="writeResult" class="result"></div>
+<hr>
+<h3>📝 Tập viết câu</h3>
+<p class="muted">Thử viết một câu tiếng Trung bạn đã học vào ô bên dưới.</p>
+<textarea id="practice" rows="3" placeholder="Nhập câu tiếng Trung của bạn..."></textarea>
+<button class="primary" onclick="document.getElementById('practiceResult').textContent=document.getElementById('practice').value.trim()?'Bạn đã hoàn thành phần luyện viết! Hãy đối chiếu với bài học nhé.':'Bạn hãy nhập một câu trước nhé.'">Lưu bài luyện trong phiên này</button>
+<div id="practiceResult" class="result"></div>
+</div>
+</section>
+</main>
+
+<footer>Hán Ngữ 360 · Bắt đầu từ những điều đơn giản 🇨🇳</footer>
+
+<script>
+function showTab(id,btn){
+document.querySelectorAll('.tab').forEach(s=>s.hidden=true);
+document.getElementById(id).hidden=false;
+document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+}
+function say(text){
+if(!('speechSynthesis' in window)){
+alert('Trình duyệt chưa hỗ trợ phát âm tự động.');return;
+}
+speechSynthesis.cancel();
+let utterance=new SpeechSynthesisUtterance(text);
+utterance.lang='zh-CN';
+utterance.rate=0.8;
+speechSynthesis.speak(utterance);
+}
+function check(section,correct){
+let result=document.getElementById(section+'Result');
+result.textContent=correct?'✅ Chính xác! Bạn làm rất tốt.':'💡 Chưa đúng rồi. Hãy thử lại nhé!';
+result.style.color=correct?'#17804a':'#c45137';
+}
+function checkWrite(){
+let value=document.getElementById('writeInput').value.trim();
+let result=document.getElementById('writeResult');
+if(value==='你好'){
+result.textContent='✅ Chính xác! 你好 (nǐ hǎo) nghĩa là Xin chào.';
+result.style.color='#17804a';
+}else{
+result.textContent='💡 Hãy thử lại: đáp án là 你好.';
+result.style.color='#c45137';
+}
+}
+</script>
+</body>
+</html>
+
