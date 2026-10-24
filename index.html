@@ -26,6 +26,7 @@
 <button data-page="read" onclick="go('read',this)">📖 Đọc</button>
 <button data-page="write" onclick="go('write',this)">✍️ Viết</button>
 <button data-page="quiz" onclick="go('quiz',this)">🏆 Trắc nghiệm</button>
+<button data-page="study" onclick="go('study',this)">🗂️ Lộ trình & thẻ</button>
 <button data-page="saved" onclick="go('saved',this)">⭐ Đã lưu</button>
 </nav>
 <section id="home" class="page active">
@@ -85,11 +86,46 @@
  <div class="section-head"><div><h2>🏆 Trắc nghiệm nhanh</h2><p>Câu hỏi trộn từ vựng, ngữ pháp và nghĩa câu.</p></div><span class="pill">Điểm: <b id="quizScore">0</b></span></div>
  <div class="card"><span class="tag" id="quizTopic">CÂU HỎI 1</span><h3 id="quizQuestion">“谢谢” nghĩa là gì?</h3><div class="answer-list" id="quizAnswers"></div><div class="feedback" id="quizFeedback"></div><button class="primary" onclick="nextQuiz()">Câu tiếp theo →</button> <button class="outline" onclick="resetQuiz()">Làm lại từ đầu</button></div>
 </section>
+<section id="study" class="page">
+ <div class="section-head"><div><h2>🗂️ Lộ trình học & thẻ ghi nhớ</h2><p>Ôn chủ động, theo dõi mục tiêu và luyện các mẫu câu thiết yếu.</p></div></div>
+ <div class="cards" style="margin-bottom:22px">
+  <article class="card"><div class="eyebrow">MỤC TIÊU HÔM NAY</div><h3>Học 10 từ và 3 câu</h3><p class="muted">Đánh dấu từng việc hoàn thành. Trạng thái được lưu trên trình duyệt này.</p>
+   <label class="checkrow"><input type="checkbox" id="goalWords" onchange="saveGoals()"> Ôn 10 từ vựng</label>
+   <label class="checkrow"><input type="checkbox" id="goalListen" onchange="saveGoals()"> Nghe và nhắc lại 3 câu</label>
+   <label class="checkrow"><input type="checkbox" id="goalWrite" onchange="saveGoals()"> Tự viết 3 câu tiếng Trung</label>
+   <p id="goalProgress" class="feedback" aria-live="polite"></p>
+  </article>
+  <article class="card"><div class="eyebrow">THẺ GHI NHỚ</div><div id="flashCount" class="muted">Thẻ 1</div><div id="flashHanzi" style="font-size:44px;font-weight:900;text-align:center;margin:14px 0">你好</div><div id="flashDetail" style="text-align:center;min-height:52px" class="muted">Hãy thử nhớ nghĩa trước khi lật thẻ.</div>
+   <div class="actions" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px"><button class="soft" onclick="flipFlash()">Lật thẻ</button><button class="outline" onclick="speakFlash()">🔊 Nghe</button><button class="primary" onclick="nextFlash()">Thẻ tiếp theo →</button></div>
+   <button class="outline" style="width:100%;margin-top:10px" onclick="markFlashLearned()">✓ Đã nhớ từ này</button>
+  </article>
+ </div>
+ <div class="section-head"><div><h2>Lộ trình nhập môn tiếng Trung</h2><p>Checklist gợi ý cho người mới bắt đầu; tích vào mục đã học để theo dõi.</p></div></div>
+ <div class="card" style="margin-bottom:22px">
+  <div class="progress-track"><div id="pathProgress" class="progress-fill" style="width:0%"></div></div><p id="pathProgressText" class="muted">0/6 chủ đề hoàn thành</p>
+  <div id="pathChecklist" class="path-list">
+   <label class="checkrow"><input type="checkbox" data-path="0" onchange="savePath()"> Pinyin và 4 thanh điệu — luyện phát âm trước khi học từ mới</label>
+   <label class="checkrow"><input type="checkbox" data-path="1" onchange="savePath()"> Chào hỏi và giới thiệu bản thân</label>
+   <label class="checkrow"><input type="checkbox" data-path="2" onchange="savePath()"> Đại từ, số đếm và thời gian</label>
+   <label class="checkrow"><input type="checkbox" data-path="3" onchange="savePath()"> Câu cơ bản: 是、吗、不、的</label>
+   <label class="checkrow"><input type="checkbox" data-path="4" onchange="savePath()"> Động từ thường gặp và sở thích</label>
+   <label class="checkrow"><input type="checkbox" data-path="5" onchange="savePath()"> Đọc đoạn ngắn và tự viết 3–5 câu</label>
+  </div>
+ </div>
+ <div class="section-head"><div><h2>Mẫu câu dùng ngay</h2><p>Thay phần trong ngoặc để tạo câu mới.</p></div></div>
+ <div class="list">
+  <article class="word"><div><strong>我是……。</strong><div class="muted">Wǒ shì… — Tôi là…</div><small>Ví dụ: 我是学生。— Tôi là sinh viên.</small></div><button class="soft" onclick="say('我是学生。')">🔊 Nghe câu</button></article>
+  <article class="word"><div><strong>我喜欢……。</strong><div class="muted">Wǒ xǐhuan… — Tôi thích…</div><small>Ví dụ: 我喜欢中文。— Tôi thích tiếng Trung.</small></div><button class="soft" onclick="say('我喜欢中文。')">🔊 Nghe câu</button></article>
+  <article class="word"><div><strong>你叫什么名字？</strong><div class="muted">Nǐ jiào shénme míngzi? — Bạn tên là gì?</div><small>Trả lời: 我叫……。— Tôi tên là…</small></div><button class="soft" onclick="say('你叫什么名字？')">🔊 Nghe câu</button></article>
+  <article class="word"><div><strong>请问，……在哪里？</strong><div class="muted">Qǐngwèn,… zài nǎlǐ? — Xin hỏi, … ở đâu?</div><small>Ví dụ: 学校在哪里？— Trường học ở đâu?</small></div><button class="soft" onclick="say('学校在哪里？')">🔊 Nghe câu</button></article>
+ </div>
+ <p class="muted" style="margin-top:16px">Lưu ý: đây là lộ trình tự học tham khảo, không phải bài thi hoặc chứng nhận HSK chính thức.</p>
+</section>
 <section id="saved" class="page">
  <div class="section-head"><div><h2>⭐ Từ đã lưu</h2><p>Tập hợp từ vựng bạn muốn ôn lại.</p></div><button class="outline" onclick="clearSaved()">Xóa danh sách đã lưu</button></div>
  <div id="savedList" class="list"></div>
 </section>
-<div class="footer">Hán Ngữ 360 · Tài liệu học tập dành cho người mới bắt đầu.<br>Tiến độ, ghi chú và từ đã lưu được lưu cục bộ trong trình duyệt, không tự đồng bộ sang thiết bị khác.</div>
+<div class="footer">HuyHoangChinese · Tài liệu học tập dành cho người mới bắt đầu.<br>Tiến độ, ghi chú và từ đã lưu được lưu cục bộ trong trình duyệt, không tự đồng bộ sang thiết bị khác.</div>
 </div>
 <script>
 const words=[
@@ -128,6 +164,15 @@ function resetQuiz(){quizIndex=0;quizScore=0;renderQuiz()}
 function saveNote(){setStore('speakNotes',document.getElementById('speakNotes').value);document.getElementById('speakFeedback').textContent=' ✓ Đã lưu ghi chú trên trình duyệt.'}
 function saveJournal(){setStore('journal',document.getElementById('writingJournal').value);document.getElementById('journalFeedback').textContent=' ✓ Đã lưu bài viết trên trình duyệt.'}
 function clearSaved(){if(confirm('Bạn muốn xóa toàn bộ từ đã lưu?')){saved=[];setStore('saved',saved);renderSaved();renderVocab()}}
-document.getElementById('speakNotes').value=getStore('speakNotes','');document.getElementById('writingJournal').value=getStore('journal','');renderVocab();renderListen();renderQuiz();renderSaved();updateStats();
+let flashIndex=0,flashRevealed=false;
+function renderFlash(){let w=words[flashIndex%words.length];document.getElementById('flashCount').textContent='Thẻ '+(flashIndex+1)+' / '+words.length;document.getElementById('flashHanzi').textContent=w.h;document.getElementById('flashDetail').textContent=flashRevealed?w.p+' · '+w.m:'Hãy thử nhớ nghĩa trước khi lật thẻ.';flashRevealed=false}
+function flipFlash(){flashRevealed=!flashRevealed;let w=words[flashIndex%words.length];document.getElementById('flashDetail').textContent=flashRevealed?w.p+' · '+w.m:'Hãy thử nhớ nghĩa trước khi lật thẻ.'}
+function nextFlash(){flashIndex=(flashIndex+1)%words.length;renderFlash()}
+function speakFlash(){say(words[flashIndex%words.length].h)}
+function markFlashLearned(){let w=words[flashIndex%words.length];if(!learned.includes(w.h)){learned.push(w.h);setStore('learned',learned);updateStats()}document.getElementById('flashDetail').textContent=w.p+' · '+w.m+' · ✓ Đã đánh dấu đã nhớ';flashRevealed=true}
+function saveGoals(){let g=['goalWords','goalListen','goalWrite'].map(id=>document.getElementById(id).checked);setStore('dailyGoals',g);let n=g.filter(Boolean).length;document.getElementById('goalProgress').textContent='Hoàn thành '+n+'/3 mục tiêu hôm nay'+(n===3?' — tuyệt vời!':'')}
+function savePath(){let a=[...document.querySelectorAll('[data-path]')].map(x=>x.checked);setStore('studyPath',a);let n=a.filter(Boolean).length;document.getElementById('pathProgress').style.width=(n/a.length*100)+'%';document.getElementById('pathProgressText').textContent=n+'/'+a.length+' chủ đề hoàn thành'}
+function initStudy(){let g=getStore('dailyGoals',[false,false,false]);['goalWords','goalListen','goalWrite'].forEach((id,i)=>document.getElementById(id).checked=!!g[i]);saveGoals();let a=getStore('studyPath',[false,false,false,false,false,false]);document.querySelectorAll('[data-path]').forEach((x,i)=>x.checked=!!a[i]);savePath();renderFlash()}
+document.getElementById('speakNotes').value=getStore('speakNotes','');document.getElementById('writingJournal').value=getStore('journal','');renderVocab();renderListen();renderQuiz();renderSaved();updateStats();initStudy();
 </script>
 </body></html>
